@@ -11,7 +11,8 @@ class Grid:
 
         self.game_true = True
 
-        self.push_count =[5] * self.grid_long
+        self.push_count =[5] * self.grid_size
+        
 
         self.answer = 0
         self.init()
@@ -31,6 +32,11 @@ class Grid:
                     temp_tool.append('|')
 
             self.grid_tool.append(temp_tool)
+       
+    #판단하는 내용 적음
+    def judge(self):
+        
+        pass
 
     def draw(self):
         # 출력 부분은 나중에 만들자
@@ -44,13 +50,14 @@ class Grid:
                 print(self.text[0])
             else:
                 print(self.text[1])
-
-            self.answer = eval(input("디스크를 0-6 열에 떨어트리세요: "))
             #1, 3, 5, 7, 9, 10
+            self.answer = eval(input("디스크를 0-5 열에 떨어트리세요: ")) * 2 + 1
+            
             if self.game_count & 1:
-                self.grid_tool[self.push_count[self.answer]][self.answer + 1] = 'B'
+                self.grid_tool[self.push_count[self.answer]][self.answer] = 'B'
             else:
-                self.grid_tool[self.push_count[self.answer]][self.answer + 1] = 'Y'
+                self.grid_tool[self.push_count[self.answer]][self.answer] = 'Y'
+            #위로 올린다
             self.push_count[self.answer] -= 1
 
             self.draw()
