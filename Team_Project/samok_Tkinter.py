@@ -1,10 +1,11 @@
 from tkinter import *
 
 turn = 1
-Table
-L1
-winstone
-direction
+global Table
+global L1
+global winstone
+global direction
+global endcount
 endcount = 0
 def judgement(row, column, color, cnt = 0, dir = 0 ):
     if cnt == 4:
@@ -80,7 +81,7 @@ class Cell(Canvas) :
             self.create_oval(10,10,40,40,fill = "yellow", tag = "grim")
             turn = 1
         if(endcount == 41):
-            L1.configure(text = ")
+            L1.configure(text = "무승부")
             turn = -1
 
     def click(self, event):
