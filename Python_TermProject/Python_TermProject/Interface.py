@@ -3,11 +3,11 @@ from tkinter.ttk import *
 from tkinter.font import *
 
 import random
-import GUI
+#import GUI
 
 class Interface:
     def __init__(self):
-        global L1
+        
         window = Tk()
         #window.geometry("500x1100+100+100")
         window.resizable(False, False)
@@ -32,8 +32,6 @@ class Interface:
         self.Frame2 = ttk.Frame(window, borderwidth = 2, width = 500, height = 1000)
         self.Frame2.grid(row = 1, column = 0)
         
-        
-
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame3>>>>>>>>>>>>>>>>>>>>>>>>>>
         self.Frame3 = ttk.Frame(self.Frame2, width = 500, height = 500)
         self.Frame3.grid(row = 0, column = 0)
@@ -74,20 +72,10 @@ class Interface:
         #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
         notebook.pack()
 
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame5>>>>>>>>>>>>>>>>>>>>>>>>>>
-        #self.Frame5 = ttk.Frame(self.Frame4)#, width = 500, height = 400
-        #self.Frame5.grid(row = 1, column = 0, columnspan = 4)
-        #self.scoreCanvas = Canvas(self.Frame5, bg = 'skyblue', width = 500, height = 250)
-        #self.scoreCanvas.pack()
-       
-
-
-
-        
-        #L1 = Label(frame2, text = "게임중...")
-        #L1.pack()
-        
         window.mainloop()
+
+    def Btn_Search(self):
+        self.F2_SearchEntry.get()
 
 
 Interface()
