@@ -137,7 +137,7 @@ class Interface:
 
 
         for i in range(len(most)):
-            self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = most[i][2])
+            self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = str(most[i][2]) + 'Pt')
 
             
 

@@ -27,12 +27,14 @@
     <Compile Include="Event.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="gmail.py" />
     <Compile Include="GUI.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="API_Parsing.py" />
     <Compile Include="jsonText.py" />
     <Compile Include="Interface.py" />
+    <Compile Include="mysmtplib.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
