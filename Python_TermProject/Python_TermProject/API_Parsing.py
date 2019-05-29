@@ -13,7 +13,7 @@ class RiotApiParsing:
     # 초기화 : 서버, Key / PlayerID, AccountID는 함수에서 받아옴.
     def __init__(self):
         self.__Server = "kr.api.riotgames.com"
-        self.__ApiKey = "RGAPI-3144c3aa-6726-42c0-a894-7adee400c429"
+        self.__ApiKey = "RGAPI-c4416bbb-0596-41ea-abfe-36dded256e90"
 
     def getPlayerIDByName(self,PlayerName):
 
@@ -83,7 +83,9 @@ class RiotApiParsing:
         conn.request("GET","/cdn/9.10.1/data/ko_KR/champion.json")
         req = conn.getresponse()
         result = req.read().decode('utf-8')
-        return json.loads(result)
+        jsonTempData = json.loads(result)
+
+        return jsonTempData['data']
          
 	#이미지 파일 얻어오는코드
     def getImgByChampionsName(self, championName):

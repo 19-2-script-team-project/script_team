@@ -3,12 +3,20 @@ class DB:
         self.__playerName = ''
         self.__PlayerID = ''
         self.__AccountID = ''
-        
+
+        self.rawChampion = {}
+        self.ChampionIDDict = {}
         self.__Rank = []
         self.__Mastery = []
         self.__Matches = []
 
 #<<<<<<<<<<<<<<<Set>>>>>>>>>>>>>>>
+    def setChampionData(self, data):
+        self.rawChampion = data
+        data = data.items()
+        for i in data:
+            self.ChampionIDDict[int(i[1]['key'])] = i[0]
+
     def setName(self, name):
         self.__playerName = name
 
@@ -63,3 +71,6 @@ class DB:
 
     def getMatches(self):
         return self.__Matches
+
+    def chp_getIDtoName(self, id):
+        return self.ChampionIDDict[int(id)]

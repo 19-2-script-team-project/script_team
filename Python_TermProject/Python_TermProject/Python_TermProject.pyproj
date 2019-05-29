@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>5b14ec3a-546b-4de7-ab0f-50bd068783ff</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>API_Parsing.py</StartupFile>
+    <StartupFile>Interface.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
