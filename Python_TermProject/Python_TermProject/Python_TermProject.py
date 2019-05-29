@@ -1,8 +1,11 @@
 from tkinter import *
+from tkinter.ttk import *
+from tkinter.font import *
+
 import random
 import GUI
 
-class TicTacToe:
+class Interface:
     def __init__(self):
         global L1
         window = Tk()
@@ -18,4 +21,4 @@ class TicTacToe:
         window.mainloop()
 
 
-TicTacToe()
+Interface()

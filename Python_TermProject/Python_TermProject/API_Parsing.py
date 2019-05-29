@@ -1,7 +1,5 @@
-        
-        #5GHaky xhpMDatlPQddXaIoAqs3tqgHNuJY0Q2IwG_3ztonj0WSyeo
-        #kmmjEmPIS8vz7KeNTCEJegBOZPIObRoxMoQh8vHoXGzm
-        #uyLDF9li-2kVsPToVrhGDcwSUXkr007gQ5wK9_a0C_HzBCQ
+#5GHaky xhpMDatlPQddXaIoAqs3tqgHNuJY0Q2IwG_3ztonj0WSyeo
+
 import webbrowser
 import urllib.request
 import urllib.parse
@@ -9,13 +7,7 @@ import urllib.parse
 import json
 import os
 
-from tkinter import *
-from tkinter.ttk import *
-
-from tkinter.font import *
 import http.client
-
-#JSON 파일을 딕셔너리로 파싱하기
 
 class RiotApiParsing:
     # 초기화 : 서버, Key / PlayerID, AccountID는 함수에서 받아옴.
@@ -24,7 +16,6 @@ class RiotApiParsing:
         self.__ApiKey = "RGAPI-3144c3aa-6726-42c0-a894-7adee400c429"
         self.__PlayerID = ""
         self.__AccountID = ""
-        self.__championData = []
 
     def getPlayerIDByName(self,PlayerName):
 
@@ -38,8 +29,9 @@ class RiotApiParsing:
 
         self.__PlayerID = jsonTempData['id']
         self.__AccountID = jsonTempData['accountId']
-
-    def getPlayerMasteryByPlayerID(self):
+    
+    #return dict : Champion Mastery
+    def getChampionMasteryByPlayerID(self):
                 
         conn = http.client.HTTPSConnection(self.__Server)
 
@@ -49,6 +41,7 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         return json.loads(result)
 
+    #return dict : Player Ranking(League)
     def getPlayerLeagueByPlayerID(self):
         conn = http.client.HTTPSConnection(self.__Server)
 
@@ -58,6 +51,7 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         return json.loads(result)
 
+    #return dict : Playing Game
     def getPlayingGameByPlayerID(self):
         conn = http.client.HTTPSConnection(self.__Server)
 
@@ -67,6 +61,7 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         return json.loads(result)
 
+    #return dict : Matchs(Played Games)
     def getMatchsByAccountID(self):
         #champion, queue, season, endIndex, beginIndex
         conn = http.client.HTTPSConnection(self.__Server)
@@ -77,6 +72,7 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         return json.loads(result)
 
+    #return dict : ChmapionsData(name, keyID, title, story...) 
     def getAllChampionsData(self):
 
         conn = http.client.HTTPSConnection("ddragon.leagueoflegends.com")
@@ -84,10 +80,6 @@ class RiotApiParsing:
         req = conn.getresponse()
         result = req.read().decode('utf-8')
         return json.loads(result)
-        
-
-        
-        print("완료")
          
 	#이미지 파일 얻어오는코드
     def getImgByChampionsName(self, championName):
@@ -117,12 +109,36 @@ class championData:
         #for i in range(len(self.__championData)):
             #self.getImgByChampionsName(championData[i][0]) #img 호출 코드
             #print(self.__championData[i][0])
+    def getChampionNames(self):
+        temp = []
+        for i in range(len(self.__championData)):
+            temp.append(self.__championData[i][0])
+        return temp
 
     def printChampionData(self):
         for i in self.__championData:
             print(i)
-        self.__championData[0]
+        
 
 abc = RiotApiParsing()
 abc.getPlayerIDByName("5GHaky")
+
+matches = abc.getMatchsByAccountID()
+for i in matches['matches']:
+    print(i)
+
+print(abc.getPlayerLeagueByPlayerID())
+mastery = abc.getChampionMasteryByPlayerID()
+for i in mastery:
+    print(i)
+
+print(abc.getPlayingGameByPlayerID())
+
 a = championData(abc.getAllChampionsData())
+a.printChampionData()
+b = a.getChampionNames()
+
+for i in b:
+    abc.getImgByChampionsName(i)
+    print(i)
+print("완료")
