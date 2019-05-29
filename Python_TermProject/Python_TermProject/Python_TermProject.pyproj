@@ -27,6 +27,7 @@
     <Compile Include="Event.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="gmail_Func.py" />
     <Compile Include="gmail.py" />
     <Compile Include="GUI.py">
       <SubType>Code</SubType>

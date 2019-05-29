@@ -1,12 +1,11 @@
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.font import *
-
+from gmail_Func import *
 
 from API_Parsing import *
 from DB import *
 import random
-
 #import GUI
 
 class Interface:
@@ -142,3 +141,9 @@ class Interface:
             
 
 Interface()
+
+
+#이메일 함수 입니다.
+mail_service = Mail_Service()
+mail_service.send_to_massage("dnflswldud@gmail.com", "태웅이에게", "안녕 나는 지영이야 미래에서 왔어 ")
+
