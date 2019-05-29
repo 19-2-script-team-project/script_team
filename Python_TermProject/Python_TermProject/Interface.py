@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.font import *
-from gmail_Func import *
+from gmail import *
 
 from API_Parsing import *
 from DB import *
 import random
+
 #import GUI
 
 class Interface:
@@ -112,7 +113,10 @@ class Interface:
 
 #<<<<<<<<<<<EVENT>>>>>>>>>>
     def Btn_EmailSend(self):
-        pass
+        recipientAddr = self.SF_Entry.get()
+        mail_service = Mail_Service()
+        mail_service.send_to_massage(recipientAddr, "전적 전송", str(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(),None,None)))
+        print('완료')
 
     def Btn_DrawGraph(self):
         graphWindow = Toplevel(self.subFuncWindow)
@@ -185,9 +189,3 @@ class Interface:
             
 
 Interface()
-
-
-#이메일 함수 입니다.
-mail_service = Mail_Service()
-mail_service.send_to_massage("dnflswldud@gmail.com", "태웅이에게", "안녕 나는 지영이야 미래에서 왔어 ")
-
