@@ -9,22 +9,24 @@ class Interface:
     def __init__(self):
         global L1
         window = Tk()
-
+        #window.geometry("500x1100+100+100")
+        window.resizable(False, False)
+        window.title("League Of Legends Search")
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1>>>>>>>>>>>>>>>>>>>>>>>>>>
         self.Frame1 = ttk.Frame(window, borderwidth = 2, width = 500, height = 100)
         self.Frame1.grid(row = 0, column = 0)
-
+        LabelFrame
         #class 상속으로 구현
         F1_Font = Font(size = 15)
-
+        
         playerButton = ttk.Button(self.Frame1, text = "플레이어", width = 20)
-        playerButton.grid(row = 0, column = 0)
+        playerButton.pack(side = "left", fill = "x", padx = 5)
 
         inGameButton = ttk.Button(self.Frame1, text = "인게임", width = 20)
-        inGameButton.grid(row = 0, column = 1)
+        inGameButton.pack(side = "left", fill = "x", padx = 5)
 
         subFuncButton = ttk.Button(self.Frame1, text = "부가기능", width = 20)
-        subFuncButton.grid(row = 0, column = 2)
+        subFuncButton.pack(side = "left", fill = "x", padx = 5)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
         self.Frame2 = ttk.Frame(window, borderwidth = 2, width = 500, height = 1000)
@@ -38,7 +40,7 @@ class Interface:
 
         self.F2_SearchEntry = ttk.Entry(self.Frame3, text = "플레이어 이름", width = 50)
         self.F2_SearchEntry.grid(row = 0, column = 0)
-        
+        #self.F2_SearchEntry.bind("<Return>", func) 엔터 입력시 함수 실행.
         searchButton = ttk.Button(self.Frame3, text = "검색", width = 10)
         searchButton.grid(row = 0, column = 1)  
 
@@ -57,26 +59,26 @@ class Interface:
 
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.FrameTab = ttk.Frame(self.Frame4)#, width = 500, height = 100
-        self.FrameTab.grid(row = 0, column = 0)
-
-        Tab_entireButton = ttk.Button(self.FrameTab, text = "전체", width = 15)
-        Tab_entireButton.grid(row = 0, column = 0)
-
-        Tab_soloRankButton = ttk.Button(self.FrameTab, text = "솔랭", width = 15)
-        Tab_soloRankButton.grid(row = 0, column = 1)
-
-        Tab_normalButton = ttk.Button(self.FrameTab, text = "일반", width = 15)
-        Tab_normalButton.grid(row = 0, column = 2)
-
-        Tab_ARAMButton = ttk.Button(self.FrameTab, text = "칼바람", width = 15)
-        Tab_ARAMButton.grid(row = 0, column = 3)
+        notebook = Notebook(self.Frame4, width = 500)
+        FrameTab_entire = ttk.Frame(self.Frame4, width = 500, height = 300)
+        FrameTab_soloRank = ttk.Frame(self.Frame4, width = 500, height = 300)
+        FrameTab_normal = ttk.Frame(self.Frame4, width = 500, height = 300)
+        FrameTab_ARAM = ttk.Frame(self.Frame4, width = 500, height = 300)
+        FrameTab_freeRank = ttk.Frame(self.Frame4, width = 500, height = 300)
+        
+        notebook.add(FrameTab_entire, text="전체") 
+        notebook.add(FrameTab_soloRank, text="솔랭") 
+        notebook.add(FrameTab_normal, text="일반") 
+        notebook.add(FrameTab_ARAM, text="칼바람") 
+        notebook.add(FrameTab_freeRank, text="자유랭")
+        #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
+        notebook.pack()
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame5>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame5 = ttk.Frame(self.Frame4)#, width = 500, height = 400
-        self.Frame5.grid(row = 1, column = 0, columnspan = 4)
-        self.scoreCanvas = Canvas(self.Frame5, bg = 'skyblue', width = 500, height = 250)
-        self.scoreCanvas.pack()
+        #self.Frame5 = ttk.Frame(self.Frame4)#, width = 500, height = 400
+        #self.Frame5.grid(row = 1, column = 0, columnspan = 4)
+        #self.scoreCanvas = Canvas(self.Frame5, bg = 'skyblue', width = 500, height = 250)
+        #self.scoreCanvas.pack()
        
 
 
