@@ -15,9 +15,9 @@ class Interface:
         self.__psEngine = RiotApiParsing()
         self.__db.setChampionData(self.__psEngine.getAllChampionsData())
 
-        window = Tk()
+        self.window = Tk()
         #window.geometry("500x1100+100+100")
-        window.resizable(False, False)
+        self.window.resizable(False, False)
 
         #<<<<<<<<<imgList>>>>>>>>>>>>
         self.imgChampionDict = {}
@@ -30,10 +30,10 @@ class Interface:
         for i in TierList:
             self.imgTierDict[i] = PhotoImage(file='tierImg/'+ i +'.gif')
 
-        window.title("League Of Legends Search")
+        self.window.title("League Of Legends Search")
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame1 = Frame(window, borderwidth = 2, width = 500, height = 100, relief = 'solid')
+        self.Frame1 = Frame(self.window, borderwidth = 2, width = 500, height = 100, relief = 'solid')
         self.Frame1.grid(row = 0, column = 0)
         
         #class 상속으로 구현
@@ -45,11 +45,11 @@ class Interface:
         inGameButton =  Button(self.Frame1, text = "인게임", width = 20)
         inGameButton.pack(side = "left", fill = "x", padx = 5)
 
-        subFuncButton = Button(self.Frame1, text = "부가기능", width = 20)
+        subFuncButton = Button(self.Frame1, text = "부가기능", width = 20, command = self.Btn_SubFunc)
         subFuncButton.pack(side = "left", fill = "x", padx = 5)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame2 = Frame(window, borderwidth = 2, width = 500, height = 1000, relief = 'solid')
+        self.Frame2 = Frame(self.window, borderwidth = 2, width = 500, height = 1000, relief = 'solid')
         self.Frame2.grid(row = 1, column = 0)
         
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame3>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -94,8 +94,8 @@ class Interface:
 
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>>
-        notebook = tkinter.ttk.Notebook(self.Frame4, width = 500)
-        FrameTab_entire = Frame(self.Frame4, width = 500, height = 300)
+        notebook = tkinter.ttk.Notebook(self.Frame4)
+        FrameTab_entire = Canvas(self.Frame4, bg = 'white', width = 500, height = 300)
         FrameTab_soloRank = Frame(self.Frame4, width = 500, height = 300)
         FrameTab_normal = Frame(self.Frame4, width = 500, height = 300)
         FrameTab_ARAM = Frame(self.Frame4, width = 500, height = 300)
@@ -109,9 +109,54 @@ class Interface:
         #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
         notebook.pack()
 
-        window.mainloop()
+        self.window.mainloop()
 
 #<<<<<<<<<<<EVENT>>>>>>>>>>
+    def Btn_EmailSend(self):
+        pass
+
+    def Btn_DrawGraph(self):
+        graphWindow = Toplevel(self.subFuncWindow)
+        
+        Matches = self.__db.getMatches()
+        print(Matches)
+
+        graphData = {}
+        for i in Matches:
+            if i[1] in graphData:
+                graphData[i[1]] += 1
+            else:
+                graphData[i[1]] = 1
+        print(graphData)
+        value = graphData.values()
+        maxCount = int(max(value))
+
+        Width = 500
+        Height = 300
+        graphCanvas = Canvas(graphWindow, width = Width, height = Height, bg = 'white')
+        graphCanvas.pack()
+        graphCanvas.create_line(10, Height - 10, Width - 10, Height - 10)
+        barW = (Width - 20) / len(graphData)
+        graphData = list(graphData)
+        value = list(value)
+        for i in range(len(graphData)):
+            graphCanvas.create_rectangle(i * barW + 10, Height - (Height - 20) * value[i] / maxCount,
+                   (i + 1) * barW+10, Height - 10, fill = 'yellow', tags = "grim")
+            graphCanvas.create_text(i*barW + 10 + 20, Height - 10+5, text = self.__db.chp_getIDtoName(graphData[i]), tags = "grim")
+            graphCanvas.create_text(i*barW + 10 + 20, Height - (Height - 20) * value[i] / maxCount - 5,
+                                   text = str(value[i]), tags = "grim")
+        
+
+    def Btn_SubFunc(self):
+        self.subFuncWindow = Toplevel(self.window)
+        self.subFuncWindow.geometry("200x100")
+        Label(self.subFuncWindow, text = '전적 정보 이메일 전송',).pack(side = 'top')
+        self.SF_Entry = Entry(self.subFuncWindow)
+        self.SF_Entry.pack(side = 'top', fill = 'x')
+        Button(self.subFuncWindow, text = "이메일 전송", command = self.Btn_EmailSend).pack(side = 'top', fill = "x")
+        Button(self.subFuncWindow, text = "현재 전적 Champion Graph 출력", command = self.Btn_DrawGraph).pack(side = 'top', fill = "x")
+
+
     def Btn_Search(self, event = None):
         name = self.F2_SearchEntry.get()
         ID, AccountID = self.__psEngine.getPlayerIDByName(name)
@@ -120,8 +165,8 @@ class Interface:
         self.__db.setRank(self.__psEngine.getPlayerLeagueByPlayerID(ID))
         self.__db.setMasteryTop3(self.__psEngine.getChampionMasteryByPlayerID(ID))
         self.__db.setMatches(self.__psEngine.getMatchsByAccountID(AccountID, None, None))
-        
         self.update_Search()
+
 #<<<<<<<<<<<UPDATE>>>>>>>>>>
 
     def update_Search(self):
@@ -134,7 +179,6 @@ class Interface:
         self.tierLabelList[2].configure(text = rank[0][1])
         self.tierLabelList[3].configure(text = rank[0][2])
         self.tierLabelList[4].configure(text = rank[0][3])
-
 
         for i in range(len(most)):
             self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = str(most[i][2]) + 'Pt')

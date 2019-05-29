@@ -59,7 +59,7 @@ class RiotApiParsing:
         return json.loads(result)
 
     #return dict : Matchs(Played Games)
-    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 10, beginIndex = 0):
+    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 30, beginIndex = 0):
         #champion, queue, season, endIndex, beginIndex
         #queue - Solo : 420, Normal : 430, freeRank : 440, ARAM : 450
         
