@@ -14,8 +14,6 @@ class RiotApiParsing:
     def __init__(self):
         self.__Server = "kr.api.riotgames.com"
         self.__ApiKey = "RGAPI-3144c3aa-6726-42c0-a894-7adee400c429"
-        self.__PlayerID = ""
-        self.__AccountID = ""
 
     def getPlayerIDByName(self,PlayerName):
 
@@ -27,25 +25,24 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         jsonTempData = json.loads(result)
 
-        self.__PlayerID = jsonTempData['id']
-        self.__AccountID = jsonTempData['accountId']
+        return (jsonTempData['id'], jsonTempData['accountId'])
     
     #return dict : Champion Mastery
-    def getChampionMasteryByPlayerID(self):
+    def getChampionMasteryByPlayerID(self, PlayerID):
                 
         conn = http.client.HTTPSConnection(self.__Server)
 
-        conn.request("GET","/lol/champion-mastery/v4/champion-masteries/by-summoner/" + self.__PlayerID +  "?api_key=" + self.__ApiKey)
+        conn.request("GET","/lol/champion-mastery/v4/champion-masteries/by-summoner/" + PlayerID +  "?api_key=" + self.__ApiKey)
 
         req = conn.getresponse()
         result = req.read().decode('utf-8')
         return json.loads(result)
 
     #return dict : Player Ranking(League)
-    def getPlayerLeagueByPlayerID(self):
+    def getPlayerLeagueByPlayerID(self, PlayerID):
         conn = http.client.HTTPSConnection(self.__Server)
 
-        conn.request("GET","/lol/league/v4/entries/by-summoner/" + self.__PlayerID +  "?api_key=" + self.__ApiKey)
+        conn.request("GET","/lol/league/v4/entries/by-summoner/" + PlayerID +  "?api_key=" + self.__ApiKey)
 
         req = conn.getresponse()
         result = req.read().decode('utf-8')
@@ -53,16 +50,16 @@ class RiotApiParsing:
 
     #return dict : Playing Game
     def getPlayingGameByPlayerID(self):
-        conn = http.client.HTTPSConnection(self.__Server)
+        conn = http.client.HTTPSConnection(self.__Server, PlayerID)
 
-        conn.request("GET","/lol/spectator/v4/active-games/by-summoner/" + self.__PlayerID +  "?api_key=" + self.__ApiKey)
+        conn.request("GET","/lol/spectator/v4/active-games/by-summoner/" + PlayerID +  "?api_key=" + self.__ApiKey)
 
         req = conn.getresponse()
         result = req.read().decode('utf-8')
         return json.loads(result)
 
     #return dict : Matchs(Played Games)
-    def getMatchsByAccountID(self, champion, queue, season = 13, endIndex = 10, beginIndex = 0):
+    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 10, beginIndex = 0):
         #champion, queue, season, endIndex, beginIndex
         #queue - Solo : 420, Normal : 430, freeRank : 440, ARAM : 450
         
@@ -73,7 +70,7 @@ class RiotApiParsing:
         if queue != None:
             filterOptions += 'queue=' + str(queue) + '&'
         filterOptions += 'season=' + str(season) + '&endIndex=' + str(endIndex) + '&beginIndex=' + str(beginIndex)  + '&'
-        conn.request("GET","/lol/match/v4/matchlists/by-account/" + self.__AccountID + filterOptions + "api_key=" + self.__ApiKey)
+        conn.request("GET","/lol/match/v4/matchlists/by-account/" + AccountID + filterOptions + "api_key=" + self.__ApiKey)
 
         req = conn.getresponse()
         result = req.read().decode('utf-8')
@@ -100,7 +97,7 @@ class RiotApiParsing:
             os.makedirs(outPath)
 
         urllib.request.urlretrieve(url, outPath + outFile)
-    
+ # 사용하지 않는 클래스 : 저장 예시  
 class Search(RiotApiParsing):
 
     def __init__(self, PlayerName):
@@ -109,36 +106,6 @@ class Search(RiotApiParsing):
         self.saveRank(self.getPlayerLeagueByPlayerID())
         self.saveChampionMasteryTop3(self.getChampionMasteryByPlayerID())
         self.saveAllMatches(self.getMatchsByAccountID(None, None))
-
-    def saveRank(self, data):
-        self.__playerRank = []
-        for i in range(len(data)):#queueType, tier, rank, point, wins, losses
-            tempData = (data[i].get('queueType'),
-                        data[i].get('tier'),
-                        data[i].get('rank'),
-                        data[i].get('leaguePoints'),
-                        data[i].get('wins'),
-                        data[i].get('losses'))
-            self.__playerRank.append(tempData)
-
-    def saveChampionMasteryTop3(self, data):
-        self.__playerMastery = []
-        for i in range(3):
-            tempData = (data[i].get('championId'),
-                        data[i].get('championLevel'),
-                        data[i].get('championPoints'))
-            self.__playerMastery.append(tempData)
-
-    def saveAllMatches(self,data):
-        data = data.get('matches')
-        self.__AllMatches = []
-        for i in range(len(data)):
-            tempData = (data[i].get('gameId'),
-                        data[i].get('champion'),
-                        data[i].get('queue'))
-            self.__AllMatches.append(tempData)
-
-    
 
 class championData:
     
@@ -163,27 +130,4 @@ class championData:
         for i in self.__championData:
             print(i)
 
-a = Search("새벽냄새")
 
-#abc = RiotApiParsing()
-#abc.getPlayerIDByName("5GHaky")
-#
-#matches = abc.getMatchsByAccountID()
-#for i in matches['matches']:
-#    print(i)
-#
-#print(abc.getPlayerLeagueByPlayerID())
-#mastery = abc.getChampionMasteryByPlayerID()
-#for i in mastery:
-#    print(i)
-#
-#print(abc.getPlayingGameByPlayerID())
-#
-#a = championData(abc.getAllChampionsData())
-#a.printChampionData()
-#b = a.getChampionNames()
-#
-#for i in b:
-#    abc.getImgByChampionsName(i)
-#    print(i)
-#print("완료")
