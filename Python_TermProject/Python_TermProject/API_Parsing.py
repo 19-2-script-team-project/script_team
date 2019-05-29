@@ -62,12 +62,17 @@ class RiotApiParsing:
         return json.loads(result)
 
     #return dict : Matchs(Played Games)
-    def getMatchsByAccountID(self, champion, queue, season, endIndex, beginIndex):
+    def getMatchsByAccountID(self, champion, queue, season = 13, endIndex = 10, beginIndex = 0):
         #champion, queue, season, endIndex, beginIndex
         #queue - Solo : 420, Normal : 430, freeRank : 440, ARAM : 450
-        #       
+        
         conn = http.client.HTTPSConnection(self.__Server)
         filterOptions = "?"
+        if champion != None:
+            filterOptions += 'champion=' + str(champion) + '&'
+        if queue != None:
+            filterOptions += 'queue=' + str(queue) + '&'
+        filterOptions += 'season=' + str(season) + '&endIndex=' + str(endIndex) + '&beginIndex=' + str(beginIndex)  + '&'
         conn.request("GET","/lol/match/v4/matchlists/by-account/" + self.__AccountID + filterOptions + "api_key=" + self.__ApiKey)
 
         req = conn.getresponse()
@@ -97,14 +102,15 @@ class RiotApiParsing:
         urllib.request.urlretrieve(url, outPath + outFile)
     
 class Search(RiotApiParsing):
+
     def __init__(self, PlayerName):
         RiotApiParsing.__init__(self)
         self.getPlayerIDByName(PlayerName)
-        #rankData(self.getPlayerLeagueByPlayerID())
-        self.saveRankData(self.getPlayerLeagueByPlayerID())
-        self.temp = self.getChampionMasteryByPlayerID()
+        self.saveRank(self.getPlayerLeagueByPlayerID())
+        self.saveChampionMasteryTop3(self.getChampionMasteryByPlayerID())
+        self.saveAllMatches(self.getMatchsByAccountID(None, None))
 
-    def saveRankData(self, data):
+    def saveRank(self, data):
         self.__playerRank = []
         for i in range(len(data)):#queueType, tier, rank, point, wins, losses
             tempData = (data[i].get('queueType'),
@@ -122,6 +128,16 @@ class Search(RiotApiParsing):
                         data[i].get('championLevel'),
                         data[i].get('championPoints'))
             self.__playerMastery.append(tempData)
+
+    def saveAllMatches(self,data):
+        data = data.get('matches')
+        self.__AllMatches = []
+        for i in range(len(data)):
+            tempData = (data[i].get('gameId'),
+                        data[i].get('champion'),
+                        data[i].get('queue'))
+            self.__AllMatches.append(tempData)
+
     
 
 class championData:
