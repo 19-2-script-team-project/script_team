@@ -16,10 +16,10 @@ class Interface:
         self.__db.setChampionData(self.__psEngine.getAllChampionsData())
 
         self.window = Tk()
-        #window.geometry("500x1100+100+100")
+        self.window.geometry("500x800")
         self.window.resizable(False, False)
 
-        #<<<<<<<<<imgList>>>>>>>>>>>>
+        #<<<<<<<<<imgList_Initialize>>>>>>>>>>>>
         self.imgChampionDict = {}
         self.imgTierDict = {}
         TierList = ['BRONZE','CHALLENGER','DIAMOND','GOLD','GRANDMASTER','IRON','MASTER','PLATINUM','SILVER']
@@ -31,29 +31,22 @@ class Interface:
             self.imgTierDict[i] = PhotoImage(file='tierImg/'+ i +'.gif')
 
         self.window.title("League Of Legends Search")
-
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame1 = Frame(self.window, borderwidth = 2, width = 500, height = 100, relief = 'solid')
-        self.Frame1.grid(row = 0, column = 0)
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<Background Image>>>>>>>>>>>>>>>>>>>>>
+        img = PhotoImage(file='UI/Background.png')
+        Label(self.window, image = img ).pack()
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1_Btns>>>>>>>>>>>>>>>>>>>>>>>>>>
         
-        #class 상속으로 구현
-        F1_Font = Font(size = 15)
-        
-        playerButton = Button(self.Frame1, bg = 'black', text = "플레이어", width = 20)
-        playerButton.pack(side = "left", fill = "x", padx = 5)
-
-        inGameButton =  Button(self.Frame1, bg = 'black', text = "인게임", width = 20)
-        inGameButton.pack(side = "left", fill = "x", padx = 5)
-
-        subFuncButton = Button(self.Frame1, bg = 'black', text = "부가기능", width = 20, command = self.Btn_SubFunc)
-        subFuncButton.pack(side = "left", fill = "x", padx = 5)
+        self.F1_BTNLIST = []
+        self.F1_BTNLIST.append(Button(self.window, text = "플레이어", width = 10).place(x = 5, y = 5))
+        self.F1_BTNLIST.append(Button(self.window, text = "인게임", width = 10).place(x = 5 + 100, y = 5))
+        self.F1_BTNLIST.append(Button(self.window, text = "부가기능", width = 10, command = self.Btn_SubFunc).place(x = 5 + 100 + 100, y = 5))
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
         self.Frame2 = Frame(self.window, borderwidth = 2, width = 500, height = 1000, relief = 'solid')
-        self.Frame2.grid(row = 1, column = 0)
+        self.Frame2.place(x = 5, y = 100)
         
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame3>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame3 = Frame(self.Frame2, width = 500, height = 500, relief = 'solid')
+        self.Frame3 = Frame(self.Frame2, bg = None, width = 500, height = 500, relief = 'solid')
         self.Frame3.grid(row = 0, column = 0)
 
         self.F2_SearchEntry = Entry(self.Frame3, text = "플레이어 이름", width = 50)
