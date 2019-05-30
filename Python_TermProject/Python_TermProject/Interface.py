@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.font import *
 from gmail import *
+from GUI import *
 
 from API_Parsing import *
 from DB import *
@@ -37,24 +38,24 @@ class Interface:
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1_Btns>>>>>>>>>>>>>>>>>>>>>>>>>>
         
         self.F1_BTNLIST = []
-        self.F1_BTNLIST.append(Button(self.window, text = "플레이어", width = 10).place(x = 5, y = 5))
-        self.F1_BTNLIST.append(Button(self.window, text = "인게임", width = 10).place(x = 5 + 100, y = 5))
-        self.F1_BTNLIST.append(Button(self.window, text = "부가기능", width = 10, command = self.Btn_SubFunc).place(x = 5 + 100 + 100, y = 5))
+        self.F1_BTNLIST.append(imgButton(self.window, 'UI/PLAYER.png').place(x = 5, y = 5))
+        self.F1_BTNLIST.append(imgButton(self.window, 'UI/INGAME.png').place(x = 5 + 100, y = 5))
+        self.F1_BTNLIST.append(imgButton(self.window, 'UI/SUBFUNC.png', self.Btn_SubFunc).place(x = 5 + 100 + 100, y = 5))
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame2 = Frame(self.window, borderwidth = 2, width = 500, height = 1000, relief = 'solid')
+        self.Frame2 = Canvas(self.window, borderwidth = 2, width = 500, height = 1000)
         self.Frame2.place(x = 5, y = 100)
         
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame3>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame3 = Frame(self.Frame2, bg = None, width = 500, height = 500, relief = 'solid')
+        self.Frame3 = Frame(self.Frame2, bg = None, width = 500, height = 500)
         self.Frame3.grid(row = 0, column = 0)
 
-        self.F2_SearchEntry = Entry(self.Frame3, text = "플레이어 이름", width = 50)
+        self.F2_SearchEntry = Entry(self.Frame3, text = "플레이어 이름", bg = 'black', fg = 'white', width = 50)
         self.F2_SearchEntry.bind("<Return>", self.Btn_Search) #엔터 입력시 함수 실행.
         self.F2_SearchEntry.grid(row = 0, column = 0)
         
 
-        searchButton = Button(self.Frame3, text = "검색", width = 10, command = self.Btn_Search)
+        searchButton = ttk.Button(self.Frame3, text = "검색", width = 10, command = self.Btn_Search)
         searchButton.grid(row = 0, column = 1)  
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FramePlayerInfo>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -82,16 +83,16 @@ class Interface:
             self.mostLabelList.append(Label(self.mostFrame, text = 'Point', image = self.imgChampionDict[1], compound = 'top'))
             self.mostLabelList[i].pack(side = 'left', padx = 2)
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame4>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame4 = Frame(self.Frame2, width = 500, height = 500, relief = 'solid')#
+        self.Frame4 = Frame(self.Frame2, width = 500, height = 500)#
         self.Frame4.grid(row = 1, column = 0)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>>
         notebook = tkinter.ttk.Notebook(self.Frame4)
-        FrameTab_entire = Canvas(self.Frame4, bg = 'white', width = 500, height = 300)
-        FrameTab_soloRank = Frame(self.Frame4, width = 500, height = 300)
-        FrameTab_normal = Frame(self.Frame4, width = 500, height = 300)
-        FrameTab_ARAM = Frame(self.Frame4, width = 500, height = 300)
-        FrameTab_freeRank = Frame(self.Frame4, width = 500, height = 300)
+        FrameTab_entire = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
+        FrameTab_soloRank = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
+        FrameTab_normal = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
+        FrameTab_ARAM = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
+        FrameTab_freeRank = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
         
         notebook.add(FrameTab_entire, text="전체") 
         notebook.add(FrameTab_soloRank, text="솔랭") 
@@ -100,7 +101,7 @@ class Interface:
         notebook.add(FrameTab_freeRank, text="자유랭")
         #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
         notebook.pack()
-
+        
         self.window.mainloop()
 
 #<<<<<<<<<<<EVENT>>>>>>>>>>
@@ -142,7 +143,8 @@ class Interface:
                                    text = str(value[i]), tags = "grim")
         
 
-    def Btn_SubFunc(self):
+    def Btn_SubFunc(self, event = None):
+        
         self.subFuncWindow = Toplevel(self.window)
         self.subFuncWindow.geometry("200x100")
         Label(self.subFuncWindow, text = '전적 정보 이메일 전송',).pack(side = 'top')
