@@ -20,7 +20,6 @@ class Mail_Service:
         self.send_massage = "" 
         self.massage_contents = ""
     
-    
     def send_to_massage(self, recipient_email = "dnflswldud@gmail.com", send_massage = "str_title", contents = "str_contents"):
         global host
         global port

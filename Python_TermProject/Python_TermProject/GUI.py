@@ -1,12 +1,10 @@
 from tkinter import *
 
 class Cell(Label) : 
-    def __init__(self, container):
-        self.xImage = PhotoImage(file = "image/cross.gif")
-        self.oImage = PhotoImage(file = "image/circle.gif")
-        self.eImage = PhotoImage(file = "image/empty.gif")
+    def __init__(self, container, imgFile):
+        self.Image = PhotoImage(file = imgFile)
 
-        Label.__init__(self, container, image = self.eImage)
+        Label.__init__(self, container, image = self.Image)
         self.data = ' '
         self.bind("<Button-1>", self.click)
 

@@ -39,13 +39,13 @@ class Interface:
         #class 상속으로 구현
         F1_Font = Font(size = 15)
         
-        playerButton = Button(self.Frame1, text = "플레이어", width = 20)
+        playerButton = Button(self.Frame1, bg = 'black', text = "플레이어", width = 20)
         playerButton.pack(side = "left", fill = "x", padx = 5)
 
-        inGameButton =  Button(self.Frame1, text = "인게임", width = 20)
+        inGameButton =  Button(self.Frame1, bg = 'black', text = "인게임", width = 20)
         inGameButton.pack(side = "left", fill = "x", padx = 5)
 
-        subFuncButton = Button(self.Frame1, text = "부가기능", width = 20, command = self.Btn_SubFunc)
+        subFuncButton = Button(self.Frame1, bg = 'black', text = "부가기능", width = 20, command = self.Btn_SubFunc)
         subFuncButton.pack(side = "left", fill = "x", padx = 5)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -91,7 +91,6 @@ class Interface:
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame4>>>>>>>>>>>>>>>>>>>>>>>>>>
         self.Frame4 = Frame(self.Frame2, width = 500, height = 500, relief = 'solid')#
         self.Frame4.grid(row = 1, column = 0)
-
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>>
         notebook = tkinter.ttk.Notebook(self.Frame4)
