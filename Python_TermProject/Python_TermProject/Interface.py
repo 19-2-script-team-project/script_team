@@ -15,7 +15,7 @@ class Interface:
         self.__db = DB()
         self.__psEngine = RiotApiParsing()
         self.__db.setChampionData(self.__psEngine.getAllChampionsData())
-
+        
         self.window = Tk()
         self.window.geometry("500x800")
         self.window.resizable(False, False)
@@ -35,64 +35,53 @@ class Interface:
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Background Image>>>>>>>>>>>>>>>>>>>>>
         img = PhotoImage(file='UI/Background.png')
         Label(self.window, image = img ).pack()
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame1_Btns>>>>>>>>>>>>>>>>>>>>>>>>>>
-        
-        self.F1_BTNLIST = []
-        self.F1_BTNLIST.append(imgButton(self.window, 'UI/PLAYER.png').place(x = 5, y = 5))
-        self.F1_BTNLIST.append(imgButton(self.window, 'UI/INGAME.png').place(x = 5 + 100, y = 5))
-        self.F1_BTNLIST.append(imgButton(self.window, 'UI/SUBFUNC.png', self.Btn_SubFunc).place(x = 5 + 100 + 100, y = 5))
 
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame2>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame2 = Canvas(self.window, borderwidth = 2, width = 500, height = 1000)
-        self.Frame2.place(x = 5, y = 100)
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<Menu_Btns>>>>>>>>>>>>>>>>>>>>>>>>>>
         
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame3>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame3 = Frame(self.Frame2, bg = None, width = 500, height = 500)
-        self.Frame3.grid(row = 0, column = 0)
+        imgButton(self.window, 'UI/PLAYER.png').place(x = 20, y = 20)
+        imgButton(self.window, 'UI/INGAME.png').place(x = 20 + 80, y = 20)
+        imgButton(self.window, 'UI/SUBFUNC.png', self.Btn_SubFunc).place(x = 20 + 80 + 80, y = 20)
+        ttk.Button(self.window, text = "검색", width = 10, command = self.Btn_Search).place(x = 400, y = 20)
+  
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>> 과제 : 크기 맞추기.
 
-        self.F2_SearchEntry = Entry(self.Frame3, text = "플레이어 이름", bg = 'black', fg = 'white', width = 50)
+        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'black', fg = 'white',  font = ('HY견고딕', 40), width = 15)
         self.F2_SearchEntry.bind("<Return>", self.Btn_Search) #엔터 입력시 함수 실행.
-        self.F2_SearchEntry.grid(row = 0, column = 0)
-        
+        self.F2_SearchEntry.place(x = 40, y = 45)
 
-        searchButton = ttk.Button(self.Frame3, text = "검색", width = 10, command = self.Btn_Search)
-        searchButton.grid(row = 0, column = 1)  
+        #<<<<<<<<<<<<<<<<<<<<<<<<Tier Info>>>>>>>>>>>>>>>>>>>>>>>
+        tierInfo = Frame(self.window)
+        tierInfo.place(x = 100, y = 245)
 
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<FramePlayerInfo>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.FramePlayerInfo = Frame(self.Frame3, width = 500, height = 300, relief = 'solid')
-        self.FramePlayerInfo.grid(row = 1, column = 0, columnspan = 2)
+        self.tierImgLabel = Label(self.window)#, image = self.imgTierDict['CHALLENGER']
+        self.tierQueueLabel = Label(tierInfo, text = 'QueueType', bg = 'black', fg = 'white', font = ('gothic', 7))
+        self.tierNameLabel = Label(tierInfo, text = 'Tier', bg = 'black', fg = 'white', font = ('gothic', 7))
+        self.tierRankLabel = Label(tierInfo, text = 'Rank', bg = 'black', fg = 'white', font = ('gothic', 7))
+        self.tierLPLabel = Label(tierInfo, text = "LP", bg = 'black', fg = 'white', font = ('gothic', 7))
+        self.tierImgLabel.place(x = 40, y = 115)
+        self.tierQueueLabel.pack(side = 'top')
+        self.tierNameLabel.pack(side = 'top')
+        self.tierRankLabel.pack(side = 'top')
+        self.tierLPLabel.pack(side = 'top')
 
-        self.tierFrame = Frame(self.FramePlayerInfo, relief = 'solid')
-        self.tierFrame.pack(side = 'left')
-        self.mostFrame = Frame(self.FramePlayerInfo, relief = 'solid')
-        self.mostFrame.pack(side = 'right')
-
-            #<<<<<<<<<<<<<<<<<<<<<<<<tierLabelLIst>>>>>>>>>>>>>>>>>>>>>>>
-        self.tierLabelList = []
-        self.tierLabelList.append(Label(self.tierFrame, image = self.imgTierDict['CHALLENGER']))
-        self.tierLabelList.append(Label(self.tierFrame, text = 'QueueType'))
-        self.tierLabelList.append(Label(self.tierFrame, text = 'Tier'))
-        self.tierLabelList.append(Label(self.tierFrame, text = 'Rank'))
-        self.tierLabelList.append(Label(self.tierFrame, text = "LP"))
-        for i in self.tierLabelList:
-            i.pack(side = 'top')
-            #<<<<<<<<<<<<<<<<<<<<<<<<mostLabelLIst>>>>>>>>>>>>>>>>>>>>>>>
+        #<<<<<<<<<<<<<<<<<<<<<<<<mostLabelLIst>>>>>>>>>>>>>>>>>>>>>>>
         
         self.mostLabelList = []
         for i in range(3):
-            self.mostLabelList.append(Label(self.mostFrame, text = 'Point', image = self.imgChampionDict[1], compound = 'top'))
-            self.mostLabelList[i].pack(side = 'left', padx = 2)
+            self.mostLabelList.append(Label(self.window, text = 'Point', image = self.imgChampionDict[1], compound = 'top'))
+            self.mostLabelList[i].place( x = 230 + (90 * i), y = 115)
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame4>>>>>>>>>>>>>>>>>>>>>>>>>>
-        self.Frame4 = Frame(self.Frame2, width = 500, height = 500)#
-        self.Frame4.grid(row = 1, column = 0)
 
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>>
-        notebook = tkinter.ttk.Notebook(self.Frame4)
-        FrameTab_entire = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
-        FrameTab_soloRank = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
-        FrameTab_normal = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
-        FrameTab_ARAM = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
-        FrameTab_freeRank = Canvas(self.Frame4, bg = 'black', width = 500, height = 300)
+        self.tabFrame = Frame(self.window, bg = 'black')#
+        self.tabFrame.place(x = 20, y = 300)
+
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>> 과제 : style 사용.
+        notebook = tkinter.ttk.Notebook(self.tabFrame)
+        FrameTab_entire = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
+        FrameTab_soloRank = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
+        FrameTab_normal = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
+        FrameTab_ARAM = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
+        FrameTab_freeRank = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
         
         notebook.add(FrameTab_entire, text="전체") 
         notebook.add(FrameTab_soloRank, text="솔랭") 
@@ -100,6 +89,7 @@ class Interface:
         notebook.add(FrameTab_ARAM, text="칼바람") 
         notebook.add(FrameTab_freeRank, text="자유랭")
         #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
+
         notebook.pack()
         
         self.window.mainloop()
@@ -171,11 +161,11 @@ class Interface:
         rank = self.__db.getRank()       
         most = self.__db.getMastery()
         
-        self.tierLabelList[0].configure(image = self.imgTierDict[rank[0][1]])
-        self.tierLabelList[1].configure(text = rank[0][0])
-        self.tierLabelList[2].configure(text = rank[0][1])
-        self.tierLabelList[3].configure(text = rank[0][2])
-        self.tierLabelList[4].configure(text = rank[0][3])
+        self.tierImgLabel.configure(image = self.imgTierDict[rank[0][1]])
+        self.tierQueueLabel.configure(text = rank[0][0])
+        self.tierNameLabel.configure(text = rank[0][1])
+        self.tierRankLabel.configure(text = rank[0][2])
+        self.tierLPLabel.configure(text = rank[0][3])
 
         for i in range(len(most)):
             self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = str(most[i][2]) + 'Pt')
