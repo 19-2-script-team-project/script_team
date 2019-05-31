@@ -45,12 +45,12 @@ class Interface:
   
         #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>> 과제 : 크기 맞추기.
 
-        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'black', fg = 'white',  font = ('HY견고딕', 40), width = 15)
+        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'black', fg = 'white',  font = ('HY견고딕', 40), width = 13)
         self.F2_SearchEntry.bind("<Return>", self.Btn_Search) #엔터 입력시 함수 실행.
         self.F2_SearchEntry.place(x = 40, y = 45)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<Tier Info>>>>>>>>>>>>>>>>>>>>>>>
-        tierInfo = Frame(self.window)
+        tierInfo = Frame(self.window, bg = 'black')
         tierInfo.place(x = 100, y = 245)
 
         self.tierImgLabel = Label(self.window)#, image = self.imgTierDict['CHALLENGER']
