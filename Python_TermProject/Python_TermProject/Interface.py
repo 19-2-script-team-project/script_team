@@ -19,6 +19,7 @@ class Interface:
         self.window = Tk()
         self.window.geometry("500x800")
         self.window.resizable(False, False)
+        self.window.title("League Of Legends Search")
 
         #<<<<<<<<<imgList_Initialize>>>>>>>>>>>>
         self.imgChampionDict = {}
@@ -31,21 +32,33 @@ class Interface:
         for i in TierList:
             self.imgTierDict[i] = PhotoImage(file='tierImg/'+ i +'.gif')
 
-        self.window.title("League Of Legends Search")
+        #<<<<<<<<<<STYLING>>>>>>>>>>>>
+        customStyle = ttk.Style()
+       
+        customStyle.theme_create( "CUSTOM", settings = {
+        "TNotebook": {"configure": { "background" : 'gray10', "tabmargins" : [70,3], "bordercolor" : 'black'} },
+        "TNotebook.Tab": {
+            "configure": {"padding": [15, 2], "foreground" : 'white', "background": 'gray10' },
+            "map":       {"background": [("selected", 'gray20'), ("active", 'gray30')]} } } )
+
+        customStyle.theme_use("CUSTOM")
+
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Background Image>>>>>>>>>>>>>>>>>>>>>
         img = PhotoImage(file='UI/Background.png')
         Label(self.window, image = img ).pack()
 
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Menu_Btns>>>>>>>>>>>>>>>>>>>>>>>>>>
-        
-        imgButton(self.window, 'UI/PLAYER.png').place(x = 20, y = 20)
-        imgButton(self.window, 'UI/INGAME.png').place(x = 20 + 80, y = 20)
-        imgButton(self.window, 'UI/SUBFUNC.png', self.Btn_SubFunc).place(x = 20 + 80 + 80, y = 20)
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<Menu_Btns>>>>>>>>>>>>>>>>>>>>>>>>>> 다시 imgBtn으로
+        playerBtnImg = PhotoImage('image_Aatrox.gif')
+        ttk.Button(self.window, image = playerBtnImg).place(x = 20, y = 20)
+        ingameBtnImg = PhotoImage('image_Aatrox.gif')
+        ttk.Button(self.window, image = ingameBtnImg).place(x = 20 + 80, y = 20)
+        subfuncBtnImg = PhotoImage('image_Aatrox.gif')
+        ttk.Button(self.window, image = subfuncBtnImg, command = self.Btn_SubFunc).place(x = 20 + 80 + 80, y = 20)
         ttk.Button(self.window, text = "검색", width = 10, command = self.Btn_Search).place(x = 400, y = 20)
   
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>> 과제 : 크기 맞추기.
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'black', fg = 'white',  font = ('HY견고딕', 40), width = 13)
+        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'gray5', fg = 'white',  font = ('HY견고딕', 40), width = 13)
         self.F2_SearchEntry.bind("<Return>", self.Btn_Search) #엔터 입력시 함수 실행.
         self.F2_SearchEntry.place(x = 40, y = 45)
 
@@ -68,29 +81,32 @@ class Interface:
         
         self.mostLabelList = []
         for i in range(3):
-            self.mostLabelList.append(Label(self.window, text = 'Point', image = self.imgChampionDict[1], compound = 'top'))
+            self.mostLabelList.append(Label(self.window, text = 'Top ' + str(i + 1) + '\nPoint', image = self.imgChampionDict[1], justify = 'center', compound = 'top', bg = 'gray10', fg = 'white'))
             self.mostLabelList[i].place( x = 230 + (90 * i), y = 115)
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<Frame4>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        self.tabFrame = Frame(self.window, bg = 'black')#
-        self.tabFrame.place(x = 20, y = 300)
-
-        #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>> 과제 : style 사용.
-        notebook = tkinter.ttk.Notebook(self.tabFrame)
-        FrameTab_entire = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
-        FrameTab_soloRank = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
-        FrameTab_normal = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
-        FrameTab_ARAM = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
-        FrameTab_freeRank = Canvas(self.tabFrame, bg = 'black', width = 460, height = 460)
+        #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>> scroll 적용.
         
-        notebook.add(FrameTab_entire, text="전체") 
-        notebook.add(FrameTab_soloRank, text="솔랭") 
-        notebook.add(FrameTab_normal, text="일반") 
-        notebook.add(FrameTab_ARAM, text="칼바람") 
-        notebook.add(FrameTab_freeRank, text="자유랭")
+        self.tabFrame = Frame(self.window, bg = 'black')#
+        self.tabFrame.place(x = 20, y = 310)
+
+        scoreNotebook = ttk.Notebook(self.tabFrame)
+        FrameTab_entire = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        entirScrollbar = Scrollbar(FrameTab_entire)
+        entirScrollbar.pack(side="right", fill="y")
+
+        FrameTab_soloRank = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        FrameTab_normal = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        FrameTab_ARAM = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        FrameTab_freeRank = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        
+        scoreNotebook.add(FrameTab_entire, text="전체") 
+        scoreNotebook.add(FrameTab_soloRank, text="솔랭") 
+        scoreNotebook.add(FrameTab_normal, text="일반") 
+        scoreNotebook.add(FrameTab_ARAM, text="칼바람") 
+        scoreNotebook.add(FrameTab_freeRank, text="자유랭")
         #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
 
-        notebook.pack()
+        scoreNotebook.pack()
         
         self.window.mainloop()
 
@@ -168,7 +184,7 @@ class Interface:
         self.tierLPLabel.configure(text = rank[0][3])
 
         for i in range(len(most)):
-            self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = str(most[i][2]) + 'Pt')
+            self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = 'Top ' + str(i + 1) + '\n' + str(most[i][2]) + 'Pt')
 
             
 
