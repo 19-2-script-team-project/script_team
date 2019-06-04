@@ -4,13 +4,13 @@ class Configuration:
 
     configs = ["Category","Ones", "Twos","Threes","Fours","Fives","Sixes",
     "Upper Scores","Upper Bonus(35)","Three of a kind", "Four of a kind", "Full House(25)",
-    "Small Straight(30)", "Large Straight(40)", "Yahtzee(50)","Chance","Lower Scores", "Total"]
+    "Small Straight(30)", "Large Straight(40)", "Yahtzee(50)","Chance","Lower Scores", "Total"]
+
     def getConfigs():
         return Configuration.configs
     def score(row, d):
-        #row에 따라 주사위 점수를 계산 반환.
-        #구현 위치
-        pass
+        if(row>=0 and row<=6):
+            return Configuration.scoreUpper(d,row+1)
     def scoreUpper(d, num):
         pass
     def scoreThreeOfAKind(d):

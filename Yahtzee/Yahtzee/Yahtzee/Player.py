@@ -8,15 +8,26 @@ class Player:
         self.used = [False for i in range(self.UPPER + self.LOWER)]
 
     def setScore(self, score, index):
-        pass
+        self.scores[index] = score
+    def setAtUsed(self, index):
+        self.used[index] = True
     def getUpperScore(self):
-        pass
+        upperTotal = 0
+        for i in range(self.UPPER):
+            upperTotal += self.scores[i]
+        return upperTotal
     def getLowerScore(self):
-        pass
+        lowerTotal = 0
+        for i in range(self.UPPER, self.UPPER + self.LOWER):
+            lowerTotal += self.scores[i]
+        return lowerTotal
     def getUsed(self):
         pass
     def getTotalScore(self):
-        pass
+        total = 0
+        for i in scores:
+            total += i
+        return total
     def toString(self):
         return self.name
     def allUpperUsed(self):
