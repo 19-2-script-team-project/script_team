@@ -76,7 +76,7 @@ class YahtzeeBoard:
                     if(j==0):
                         self.fields.append(list())
                     self.fields[i-1].append(Button(self.window, text="", font=self.TempFont, width = 8,
-                                                       command=lambda row = i -1: self.categoryListener(row)))
+                                                       command=lambda row = i - 1: self.categoryListener(row)))
                     self.fields[i-1][j].grid(row = i, column = 2 + j)
                     if(j!=self.player or (i-1) == self.UPPERTOTAL or (i-1) == self.UPPERBONUS
                        or (i-1) == self.LOWERTOTAL or (i -1) == self.TOTAL):
