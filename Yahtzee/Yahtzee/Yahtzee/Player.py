@@ -27,13 +27,16 @@ class Player:
 
     def getUsed(self):
         pass
+
     def getTotalScore(self):
         total = 0
         for i in scores:
             total += i
         return total
+
     def toString(self):
         return self.name
+
     def allUpperUsed(self):
         for i in range(self.UPPER):
             if (self.used[i] == False):

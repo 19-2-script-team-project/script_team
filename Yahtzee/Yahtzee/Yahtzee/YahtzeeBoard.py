@@ -98,10 +98,18 @@ class YahtzeeBoard:
             self.roll += 1
             self.rollDice.configure(text="Roll Again")
             self.bottomLabel.configure(text = "보관할 주사위 선택 후 Roll Again")
+
         elif (self.roll == 2):
             self.bottomLabel.configure(text = "카테고리를 선택하세요")
             self.rollDice['state'] = 'disabled'
             self.rollDice['bg'] = 'light gray'
+
+        for i in range(15):
+            score = str(Configuration.score(i,self.dice))
+            if (score == '-1'):
+                score = '';
+            self.fields[i][self.player].configure(text = score)
+
 
     def diceListener(self, row):
         self.diceButtons[row]['state'] = 'disabled'
@@ -114,7 +122,7 @@ class YahtzeeBoard:
         if (row > 7):
             index = row - 2
         self.players[self.player].setScore(score,index)
-        self.players[self.player].setAtUsed(index) #?
+        self.players[self.player].setAtUsed(index)
         self.fields[row][self.player].configure(text = str(score))
         self.fields[row][self.player]['state'] = 'disabled'
         self.fields[row][self.player]['bg'] = 'light gray'
@@ -128,16 +136,23 @@ class YahtzeeBoard:
                 self.fields[self.UPPERBONUS][self.player].configure(text="0")#UPPERBONUS=7
 
         if (self.players[self.player].allLowerUsed()):
-            pass
+             self.fields[self.LOWERTOTAL][self.player].configure(text =
+                str(self.players[self.player].getLowerScore()))
+
         if (self.players[self.player].allUpperUsed() and self.players[self.player].allLowerUsed()):
-            pass
+            self.fields[self.TOTAL][self.player].configure(text =
+                str(self.players[self.player].getTotalScore()))
+
         self.player = (self.player + 1) % self.numPlayers
         for i in range(self.TOTAL+1):
             for j in range(self.numPlayers):
-                pass
+                self.fields[i][j]['state'] = 'disabled'
+                self.fields[i][j]['bg'] = 'light gray'
 
         if (self.player == 0):
             self.round += 1
         if (self.round == 13):
             pass
 
+        self.bottomLabel.configure(text = self.players[self.player].toString()+
+                                 "차례: Roll Dice 버튼을 누르세요")

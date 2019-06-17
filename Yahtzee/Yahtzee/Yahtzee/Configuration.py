@@ -29,24 +29,86 @@ class Configuration:
             return -1
 
     def scoreUpper(d, num):
-        if(num == 1):
-            pass
-        elif#one , two, three .... 점수 반환.
-        pass
+
+        result = 0
+        for i in d:
+            if (i.getRoll() == num):
+                result += num
+        return result
+
     def scoreThreeOfAKind(d):
-        pass
+        result = 0
+        dieList = [i.getRoll() for i in d]
+        for i in range(1,7):
+            if(dieList.count(i) == 3):
+                for i in dieList:
+                    result += i
+                return result
+        return 0
+
     def scoreFourOfAKind(d):
-        pass
+        result = 0
+        dieList = [i.getRoll() for i in d]
+        for i in range(1,7):
+            if(dieList.count(i) == 4):
+                for i in dieList:
+                    result += i
+                return result
+        return 0
+
     def scoreFullHouse(d):
-        pass
+        three = False
+        two = False
+
+        dieList = [i.getRoll() for i in d]
+
+        for i in range(1,7):
+            if(dieList.count(i) == 3):
+                three = True
+            if(dieList.count(i) == 2):
+                two = True
+
+        if(three and two):
+            return 25
+        return 0
+
     def scoreSmallStraight(d):
-        pass
+        
+        dieList = [i.getRoll() for i in d]
+        
+        check = [1 if i in dieList else 0 for i in [1,2,3,4]]
+        check2 = [1 if i in dieList else 0 for i in [2,3,4,5]]
+        check3 = [1 if i in dieList else 0 for i in [3,4,5,6]]
+        if(check.count(0) == 0 or check2.count(0) == 0 or check3.count(0) == 0):
+            return 30
+
+        return 0
+
     def scoreLargeStraight(d):
-        pass
+
+        dieList = [i.getRoll() for i in d]
+        
+        check = [1 if i in dieList else 0 for i in [1,2,3,4,5]]
+        check2 = [1 if i in dieList else 0 for i in [2,3,4,5,6]]
+        if(check.count(0) == 0 or check2.count(0) == 0):
+            return 40
+
+        return 0
+
     def scoreYahtzee(d):
-        pass
+        dieList = [i.getRoll() for i in d]
+
+        for i in range(1,7):
+            if(dieList.count(i) == 5):
+                return 50
+        return 0
+
     def scoreChance(d):
-        pass
+        result = 0
+        for i in d:
+            result += i.getRoll()
+        return result
+
     def sumDie(d):
         pass
 

@@ -1,5 +1,6 @@
+from tkinter import *
 
-class ScrolledWindow(tk.Frame):
+class ScrolledWindow(Tk.Frame):
     """
     1. Master widget gets scrollbars and a canvas. Scrollbars are connected 
     to canvas scrollregion.
@@ -18,8 +19,8 @@ class ScrolledWindow(tk.Frame):
 
     """
 
-
     def __init__(self, parent, canv_w = 400, canv_h = 400, *args, **kwargs):
+        
         """Parent = master of scrolled window
         canv_w - width of canvas
         canv_h - height of canvas
