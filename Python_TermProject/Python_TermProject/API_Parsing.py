@@ -13,7 +13,7 @@ class RiotApiParsing:
     # 초기화 : 서버, Key / PlayerID, AccountID는 함수에서 받아옴.
     def __init__(self):
         self.__Server = "kr.api.riotgames.com"
-        self.__ApiKey = "RGAPI-d95b90e2-ca07-4a55-af3e-58c668fc946b"
+        self.__ApiKey = "RGAPI-97c6dee1-7c96-424c-815e-50a82d612374"
 
     def getPlayerIDByName(self,PlayerName):
 

@@ -30,7 +30,7 @@ class Interface:
             self.imgChampionDict[i[0]] = PhotoImage(file = 'images/image_'+ i[1] +'.gif')
 
         for i in TierList:
-            self.imgTierDict[i] = PhotoImage(file='tierImg/'+ i +'.gif')
+            self.imgTierDict[i] = PhotoImage(file='tierImg/AM_'+ i +'.png')
 
         #<<<<<<<<<<STYLING>>>>>>>>>>>>
         customStyle = ttk.Style()
@@ -46,15 +46,19 @@ class Interface:
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Background Image>>>>>>>>>>>>>>>>>>>>>
         img = PhotoImage(file='UI/Background.png')
         Label(self.window, image = img ).pack()
-
+        
         #<<<<<<<<<<<<<<<<<<<<<<<<<<Menu_Btns>>>>>>>>>>>>>>>>>>>>>>>>>> 다시 imgBtn으로
-        playerBtnImg = PhotoImage('image_Aatrox.gif')
-        ttk.Button(self.window, image = playerBtnImg).place(x = 20, y = 20)
-        ingameBtnImg = PhotoImage('image_Aatrox.gif')
-        ttk.Button(self.window, image = ingameBtnImg).place(x = 20 + 80, y = 20)
-        subfuncBtnImg = PhotoImage('image_Aatrox.gif')
-        ttk.Button(self.window, image = subfuncBtnImg, command = self.Btn_SubFunc).place(x = 20 + 80 + 80, y = 20)
-        ttk.Button(self.window, text = "검색", width = 10, command = self.Btn_Search).place(x = 400, y = 20)
+        playerBtnImg = PhotoImage(file='UI/Player.png')
+        Button(self.window, image = playerBtnImg, borderwidth=0, highlightthickness=0).place(x = 20, y = 20)
+       
+        ingameBtnImg = PhotoImage(file='UI/InGame.png')
+        Button(self.window, image = ingameBtnImg, borderwidth=0, highlightthickness=0).place(x = 20 + 100, y = 20)
+
+        subfuncBtnImg = PhotoImage(file='UI/SubFucn.png')
+        Button(self.window, image = subfuncBtnImg, borderwidth=0, highlightthickness=0, command = self.Btn_SubFunc).place(x = 20 + 100 + 100, y = 20)
+        
+        searchBtnImg = PhotoImage(file='UI/Search.png')
+        Button(self.window, image = searchBtnImg, borderwidth=0, highlightthickness=0, command = self.Btn_Search).place(x = 400, y = 20)
   
         #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -64,10 +68,11 @@ class Interface:
 
         #<<<<<<<<<<<<<<<<<<<<<<<<Tier Info>>>>>>>>>>>>>>>>>>>>>>>
         tierInfo = Frame(self.window, bg = 'black')
-        tierInfo.place(x = 100, y = 245)
+        tierInfo.place(x = 52, y = 245)
 
-        self.tierImgLabel = Label(self.window)#, image = self.imgTierDict['CHALLENGER']
-        self.tierQueueLabel = Label(tierInfo, text = 'QueueType', bg = 'black', fg = 'white', font = ('gothic', 7))
+        self.tierImgLabel = Label(self.window, image = self.imgTierDict['CHALLENGER'], relief = 'flat')#, image = self.imgTierDict['CHALLENGER']
+        self.tierImgLabel["borderwidth"] = 0
+        self.tierQueueLabel = Label(tierInfo, text = 'RANKED_SOLO_5x5', bg = 'black', fg = 'white', font = ('gothic', 7))
         self.tierNameLabel = Label(tierInfo, text = 'Tier', bg = 'black', fg = 'white', font = ('gothic', 7))
         self.tierRankLabel = Label(tierInfo, text = 'Rank', bg = 'black', fg = 'white', font = ('gothic', 7))
         self.tierLPLabel = Label(tierInfo, text = "LP", bg = 'black', fg = 'white', font = ('gothic', 7))
