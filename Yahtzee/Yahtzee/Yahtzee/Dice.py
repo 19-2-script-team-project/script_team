@@ -4,4 +4,6 @@ class Dice:
         self.roll = random.randint(1,6)
     def getRoll(self):
         return self.roll
+    def resetRoll(self):
+        self.roll = 0
 

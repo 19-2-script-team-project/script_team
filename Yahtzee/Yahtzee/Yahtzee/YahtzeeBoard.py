@@ -28,7 +28,7 @@ class YahtzeeBoard:
         self.TempFont = font.Font(size=16, weight = 'bold', family = 'Consolas')
         self.label = []
         self.entry = []
-        self.label.append(Label(self.pwindow, text = "플레이어   명수", font = self.TempFont))
+        self.label.append(Label(self.pwindow, text = "플레이어  명수", font = self.TempFont))
         self.label[0].grid(row=0, column =0)
 
         for i in range(1,11):
@@ -57,13 +57,13 @@ class YahtzeeBoard:
         #Dice Btns
         for I in range(5):
             self.dice.append(Dice())
-        self.rollDice = Button(self.window, text="Roll Dice",
+        self.rollDice = Button(self.window, text="Roll Dice", bg = "snow",
                                font=self.TempFont, command=self.rollDiceListener)
         self.rollDice.grid(row=0, column=0)
 
         #Player Btns
         for i in range(5):
-            self.diceButtons.append(Button(self.window, text='?', font=self.TempFont,
+            self.diceButtons.append(Button(self.window, text='?', font=self.TempFont, bg = "snow",
                                            width=8, command=lambda row=i: self.diceListener(row)))
             self.diceButtons[i].grid(row=i+ 1, column=0)
 
@@ -75,7 +75,7 @@ class YahtzeeBoard:
                 else:
                     if(j==0):
                         self.fields.append(list())
-                    self.fields[i-1].append(Button(self.window, text="", font=self.TempFont, width = 8,
+                    self.fields[i-1].append(Button(self.window, text="", font=self.TempFont, width = 8, bg = "snow",
                                                        command=lambda row = i - 1: self.categoryListener(row)))
                     self.fields[i-1][j].grid(row = i, column = 2 + j)
                     if(j!=self.player or (i-1) == self.UPPERTOTAL or (i-1) == self.UPPERBONUS
@@ -104,11 +104,13 @@ class YahtzeeBoard:
             self.rollDice['state'] = 'disabled'
             self.rollDice['bg'] = 'light gray'
 
-        for i in range(15):
-            score = str(Configuration.score(i,self.dice))
-            if (score == '-1'):
-                score = '';
-            self.fields[i][self.player].configure(text = score)
+        for i in range(13):
+            if( i < 6 and not self.players[self.player].getUsed(i)):
+                score = str(Configuration.score(i,self.dice))
+                self.fields[i][self.player].configure(text = score)
+            elif(i > 5 and not self.players[self.player].getUsed(i)):
+                score = str(Configuration.score(i + 2,self.dice))
+                self.fields[i+2][self.player].configure(text = score)
 
 
     def diceListener(self, row):
@@ -152,7 +154,46 @@ class YahtzeeBoard:
         if (self.player == 0):
             self.round += 1
         if (self.round == 13):
-            pass
+            winner = 0
+            for i in range(len(self.players)):
+                if(self.players[winner].getTotalScore() < self.players[i].getTotalScore()):
+                    winner = i
+            self.bottomLabel.configure(text = self.players[winner].toString()+
+                                 " 승리 게임끝")
+            self.rollDice.configure(text="E N D")
+            self.rollDice['state'] = 'disabled'
+            self.rollDice['bg'] = 'light gray'
+            self.roll = 0
+            #Dice 버튼 초기화
+            for i in range(5):
+                self.dice[i].resetRoll()
+                self.diceButtons[i]['text'] = '?'
+                self.diceButtons[i]['state'] = 'disabled'
+                self.diceButtons[i]['bg'] = 'light gray'
+            return
+        #Roll Dice 버튼 초기화
+        self.rollDice.configure(text="Roll Dice")
+        self.rollDice['state'] = 'normal'
+        self.rollDice['bg'] = 'snow'
+        self.roll = 0
+        #Dice 버튼 초기화
+        for i in range(5):
+            self.dice[i].resetRoll()
+            self.diceButtons[i]['text'] = '?'
+            self.diceButtons[i]['state'] = 'normal'
+            self.diceButtons[i]['bg'] = 'snow'
 
+        #Player Btn 초기화
+        for i in range(0, 13):
+            if( i < 6 and not self.players[self.player].getUsed(i)):
+                self.fields[i][self.player]['text'] = ''
+                self.fields[i][self.player]['state'] = 'normal'
+                self.fields[i][self.player]['bg'] = 'snow'
+            elif(i > 5 and not self.players[self.player].getUsed(i)):
+                self.fields[i+2][self.player]['text'] = ''
+                self.fields[i+2][self.player]['state'] = 'normal'
+                self.fields[i+2][self.player]['bg'] = 'snow'
+
+        #bottomLabel 초기화
         self.bottomLabel.configure(text = self.players[self.player].toString()+
                                  "차례: Roll Dice 버튼을 누르세요")

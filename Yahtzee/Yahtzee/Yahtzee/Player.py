@@ -25,12 +25,12 @@ class Player:
             lowerTotal += self.scores[i]
         return lowerTotal
 
-    def getUsed(self):
-        pass
+    def getUsed(self, index):
+        return self.used[index]
 
     def getTotalScore(self):
         total = 0
-        for i in scores:
+        for i in self.scores:
             total += i
         return total
 
