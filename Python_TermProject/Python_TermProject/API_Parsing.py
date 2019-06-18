@@ -1,4 +1,3 @@
-#5GHaky xhpMDatlPQddXaIoAqs3tqgHNuJY0Q2IwG_3ztonj0WSyeo
 # -*- coding: utf-8 -*-
 import webbrowser
 import urllib.request
@@ -50,7 +49,7 @@ class RiotApiParsing:
 
     #return dict : Playing Game
     def getPlayingGameByPlayerID(self):
-        conn = http.client.HTTPSConnection(self.__Server, PlayerID)
+        conn = http.client.HTTPSConnection(self.__Server)
 
         conn.request("GET","/lol/spectator/v4/active-games/by-summoner/" + PlayerID +  "?api_key=" + self.__ApiKey)
 
@@ -59,7 +58,7 @@ class RiotApiParsing:
         return json.loads(result)
 
     #return dict : Matchs(Played Games)
-    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 30, beginIndex = 0):
+    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 40, beginIndex = 0):
         #champion, queue, season, endIndex, beginIndex
         #queue - Solo : 420, Normal : 430, freeRank : 440, ARAM : 450
         
@@ -76,6 +75,13 @@ class RiotApiParsing:
         result = req.read().decode('utf-8')
         return json.loads(result)
 
+    def getMatchByGameID(self, gameId):
+        conn = http.client.HTTPSConnection(self.__Server)
+        conn.request("GET","/lol/match/v4/matches/" + str(gameId) + "?api_key=" + self.__ApiKey)
+        req = conn.getresponse()
+        result = req.read().decode('utf-8')
+        return json.loads(result)
+
     #return dict : ChmapionsData(name, keyID, title, story...) 
     def getAllChampionsData(self):
 
@@ -86,7 +92,7 @@ class RiotApiParsing:
         jsonTempData = json.loads(result)
 
         return jsonTempData['data']
-         
+
 	#이미지 파일 얻어오는코드
     def getImgByChampionsName(self, championName):
         url = "http://ddragon.leagueoflegends.com/cdn/9.10.1/img/champion/" + championName + ".png"
@@ -99,6 +105,7 @@ class RiotApiParsing:
             os.makedirs(outPath)
 
         urllib.request.urlretrieve(url, outPath + outFile)
+
  # 사용하지 않는 클래스 : 저장 예시  
 class Search(RiotApiParsing):
 

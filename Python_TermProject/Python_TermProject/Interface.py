@@ -3,7 +3,7 @@ from tkinter.ttk import *
 from tkinter.font import *
 from gmail import *
 from GUI import *
-
+from ScrolledWindow import *
 from API_Parsing import *
 from DB import *
 import random
@@ -36,9 +36,9 @@ class Interface:
         customStyle = ttk.Style()
        
         customStyle.theme_create( "CUSTOM", settings = {
-        "TNotebook": {"configure": { "background" : 'gray10', "tabmargins" : [70,3], "bordercolor" : 'black'} },
+        "TNotebook": {"configure": { "background" : 'black', "tabmargins" : [40,3], "bordercolor" : 'black'} },
         "TNotebook.Tab": {
-            "configure": {"padding": [15, 2], "foreground" : 'white', "background": 'gray10' },
+            "configure": {"padding": [15, 2], "foreground" : 'white', "background": 'black' },
             "map":       {"background": [("selected", 'gray20'), ("active", 'gray30')]} } } )
 
         customStyle.theme_use("CUSTOM")
@@ -62,9 +62,9 @@ class Interface:
   
         #<<<<<<<<<<<<<<<<<<<<<<<<<<SearchEntry>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'gray5', fg = 'white',  font = ('HY견고딕', 40), width = 13)
+        self.F2_SearchEntry = Entry(self.window, justify = 'center', bg = 'gray5', fg = 'white',  font = ('HY견고딕', 30), width = 18)
         self.F2_SearchEntry.bind("<Return>", self.Btn_Search) #엔터 입력시 함수 실행.
-        self.F2_SearchEntry.place(x = 40, y = 45)
+        self.F2_SearchEntry.place(x = 20, y = 48)
 
         #<<<<<<<<<<<<<<<<<<<<<<<<Tier Info>>>>>>>>>>>>>>>>>>>>>>>
         tierInfo = Frame(self.window, bg = 'black')
@@ -72,10 +72,11 @@ class Interface:
 
         self.tierImgLabel = Label(self.window, image = self.imgTierDict['CHALLENGER'], relief = 'flat')#, image = self.imgTierDict['CHALLENGER']
         self.tierImgLabel["borderwidth"] = 0
-        self.tierQueueLabel = Label(tierInfo, text = 'RANKED_SOLO_5x5', bg = 'black', fg = 'white', font = ('gothic', 7))
-        self.tierNameLabel = Label(tierInfo, text = 'Tier', bg = 'black', fg = 'white', font = ('gothic', 7))
-        self.tierRankLabel = Label(tierInfo, text = 'Rank', bg = 'black', fg = 'white', font = ('gothic', 7))
-        self.tierLPLabel = Label(tierInfo, text = "LP", bg = 'black', fg = 'white', font = ('gothic', 7))
+
+        self.tierQueueLabel = Label(tierInfo, text = 'RANKED_SOLO_5x5', bg = 'black', fg = 'white', font = ('gothic', 8))
+        self.tierNameLabel = Label(tierInfo, text = 'Tier', bg = 'black', fg = 'white', font = ('gothic', 8))
+        self.tierRankLabel = Label(tierInfo, text = 'Rank', bg = 'black', fg = 'white', font = ('gothic', 8))
+        self.tierLPLabel = Label(tierInfo, text = "LP", bg = 'black', fg = 'white', font = ('gothic', 8))
         self.tierImgLabel.place(x = 40, y = 115)
         self.tierQueueLabel.pack(side = 'top')
         self.tierNameLabel.pack(side = 'top')
@@ -91,27 +92,28 @@ class Interface:
 
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>> scroll 적용.
         
-        self.tabFrame = Frame(self.window, bg = 'black')#
-        self.tabFrame.place(x = 20, y = 310)
+        self.tabFrame = Frame(self.window, bg = 'black')
+        self.tabFrame.place(x = 20, y = 350)
 
-        scoreNotebook = ttk.Notebook(self.tabFrame)
-        FrameTab_entire = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
-        entirScrollbar = Scrollbar(FrameTab_entire)
-        entirScrollbar.pack(side="right", fill="y")
-
-        FrameTab_soloRank = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
-        FrameTab_normal = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
-        FrameTab_ARAM = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
-        FrameTab_freeRank = Canvas(self.tabFrame, bg =  'gray10', width = 460, height = 450)
+        self.scoreNotebook = ttk.Notebook(self.tabFrame)
         
-        scoreNotebook.add(FrameTab_entire, text="전체") 
-        scoreNotebook.add(FrameTab_soloRank, text="솔랭") 
-        scoreNotebook.add(FrameTab_normal, text="일반") 
-        scoreNotebook.add(FrameTab_ARAM, text="칼바람") 
-        scoreNotebook.add(FrameTab_freeRank, text="자유랭")
-        #notebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
+        self.FrameTab_entire = Frame(self.tabFrame, bg = 'black', width = 460, height = 400)
+        self.FrameTab_soloRank = Frame(self.tabFrame, bg = 'black', width = 460, height = 400)
+        self.FrameTab_normal = Frame(self.tabFrame, bg = 'black', width = 460, height = 400)
+        self.FrameTab_ARAM = Frame(self.tabFrame, bg = 'black', width = 460, height = 400)
+        self.FrameTab_freeRank = Frame(self.tabFrame, bg = 'black', width = 460, height = 400)
+        
+        self.TabComplete = [False for i in range(5)]
 
-        scoreNotebook.pack()
+        self.scoreNotebook.add(self.FrameTab_entire, text="  전체  ") 
+        self.scoreNotebook.add(self.FrameTab_soloRank, text="  솔랭  ") 
+        self.scoreNotebook.add(self.FrameTab_normal, text="  일반  ") 
+        self.scoreNotebook.add(self.FrameTab_ARAM, text=" 칼바람 ") 
+        self.scoreNotebook.add(self.FrameTab_freeRank, text=" 자유랭 ")
+        self.scoreNotebook.bind_all("<<NotebookTabChanged>>", self.tabChangedEvent) 
+        
+
+        self.scoreNotebook.pack()
         
         self.window.mainloop()
 
@@ -173,7 +175,46 @@ class Interface:
         self.__db.setRank(self.__psEngine.getPlayerLeagueByPlayerID(ID))
         self.__db.setMasteryTop3(self.__psEngine.getChampionMasteryByPlayerID(ID))
         self.__db.setMatches(self.__psEngine.getMatchsByAccountID(AccountID, None, None))
+        self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(AccountID, None, None), 'Entire')
+        print('Load Entire')
+
         self.update_Search()
+
+    def tabChangedEvent(self, event):
+        if(self.scoreNotebook.index('current') == 0 and not self.TabComplete[0]):
+            self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(), None, None), 'Entire')
+            print('Load Entire')
+            ScrolledFrame_Rank(self.FrameTab_entire,   self.__db.getCardDB('Entire'), self.imgChampionDict)
+            print('Draw Entire')
+            self.TabComplete[0] = True
+
+        elif(self.scoreNotebook.index('current') == 1 and not self.TabComplete[1]):
+            self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(), None, 420), 'SoloRank')
+            print('Load SoloRank')
+            ScrolledFrame_Rank(self.FrameTab_soloRank, self.__db.getCardDB('SoloRank'), self.imgChampionDict)
+            print('Draw SoloRank')
+            self.TabComplete[1] = True
+
+        elif(self.scoreNotebook.index('current') == 2 and not self.TabComplete[2]):
+            self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(), None, 430), 'Normal')
+            print('Load Normal')
+            ScrolledFrame_Rank(self.FrameTab_normal,   self.__db.getCardDB('Normal'), self.imgChampionDict)
+            print('Draw Normal')
+            self.TabComplete[2] = True
+
+        elif(self.scoreNotebook.index('current') == 3 and not self.TabComplete[3]):
+            self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(), None, 450), 'ARAM')
+            print('Load ARAM')
+            ScrolledFrame_Rank(self.FrameTab_ARAM,     self.__db.getCardDB('ARAM'), self.imgChampionDict)
+            print('Draw ARAM')
+            self.TabComplete[3] = True
+
+        elif(self.scoreNotebook.index('current') == 4 and not self.TabComplete[4]):
+            self.__db.LoadMatches(self.__psEngine.getMatchsByAccountID(self.__db.getAccountID(), None, 440), 'FreeRank')
+            print('Load FreeRank')
+            ScrolledFrame_Rank(self.FrameTab_freeRank, self.__db.getCardDB('FreeRank'), self.imgChampionDict)
+            print('Draw FreeRank')
+            self.TabComplete[4] = True
 
 #<<<<<<<<<<<UPDATE>>>>>>>>>>
 
@@ -181,16 +222,18 @@ class Interface:
         #RANK DRAW
         rank = self.__db.getRank()       
         most = self.__db.getMastery()
-        
+        #Tier Info
         self.tierImgLabel.configure(image = self.imgTierDict[rank[0][1]])
         self.tierQueueLabel.configure(text = rank[0][0])
         self.tierNameLabel.configure(text = rank[0][1])
         self.tierRankLabel.configure(text = rank[0][2])
         self.tierLPLabel.configure(text = rank[0][3])
-
+        #Most List
         for i in range(len(most)):
             self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = 'Top ' + str(i + 1) + '\n' + str(most[i][2]) + 'Pt')
-
-            
+        AccountID =  self.__db.getAccountID()
+        ScrolledFrame_Rank(self.FrameTab_entire,   self.__db.getCardDB('Entire'), self.imgChampionDict)
+        print('Draw Entire')
+        self.TabComplete[0] = True
 
 Interface()
