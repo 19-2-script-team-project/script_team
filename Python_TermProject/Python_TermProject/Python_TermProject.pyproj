@@ -26,19 +26,15 @@
     <Compile Include="DB.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Event.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="gmail.py" />
-    <Compile Include="GUI.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="API_Parsing.py" />
-    <Compile Include="jsonText.py" />
     <Compile Include="Interface.py" />
     <Compile Include="mysmtplib.py" />
     <Compile Include="noti.py" />
     <Compile Include="ScrolledWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="teller.py" />

@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.font import *
 from gmail import *
-from GUI import *
 from ScrolledWindow import *
 from API_Parsing import *
 from DB import *
