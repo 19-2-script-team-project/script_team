@@ -12,7 +12,7 @@ class RiotApiParsing:
     # 초기화 : 서버, Key / PlayerID, AccountID는 함수에서 받아옴.
     def __init__(self):
         self.__Server = "kr.api.riotgames.com"
-        self.__ApiKey = "RGAPI-97c6dee1-7c96-424c-815e-50a82d612374"
+        self.__ApiKey = "RGAPI-14febb86-181c-441b-894d-80feb516e207"
 
     def getPlayerIDByName(self,PlayerName):
 
@@ -58,7 +58,7 @@ class RiotApiParsing:
         return json.loads(result)
 
     #return dict : Matchs(Played Games)
-    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 40, beginIndex = 0):
+    def getMatchsByAccountID(self, AccountID, champion, queue, season = 13, endIndex = 30, beginIndex = 0):
         #champion, queue, season, endIndex, beginIndex
         #queue - Solo : 420, Normal : 430, freeRank : 440, ARAM : 450
         

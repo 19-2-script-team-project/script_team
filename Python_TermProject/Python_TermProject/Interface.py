@@ -6,6 +6,7 @@ from GUI import *
 from ScrolledWindow import *
 from API_Parsing import *
 from DB import *
+import teller
 import random
 
 #import GUI
@@ -68,7 +69,7 @@ class Interface:
 
         #<<<<<<<<<<<<<<<<<<<<<<<<Tier Info>>>>>>>>>>>>>>>>>>>>>>>
         tierInfo = Frame(self.window, bg = 'black')
-        tierInfo.place(x = 52, y = 245)
+        tierInfo.place(x = 50, y = 245)
 
         self.tierImgLabel = Label(self.window, image = self.imgTierDict['CHALLENGER'], relief = 'flat')#, image = self.imgTierDict['CHALLENGER']
         self.tierImgLabel["borderwidth"] = 0
@@ -89,7 +90,9 @@ class Interface:
         for i in range(3):
             self.mostLabelList.append(Label(self.window, text = 'Top ' + str(i + 1) + '\nPoint', image = self.imgChampionDict[1], justify = 'center', compound = 'top', bg = 'gray10', fg = 'white'))
             self.mostLabelList[i].place( x = 230 + (90 * i), y = 115)
-
+        
+        self.WinCanvas = Canvas(self.window, bg = 'gray5', height = 50, width = 240)
+        self.WinCanvas.place(x = 230, y = 220)
         #<<<<<<<<<<<<<<<<<<<<<<<<<<FrameTab>>>>>>>>>>>>>>>>>>>>>>>>>> scroll 적용.
         
         self.tabFrame = Frame(self.window, bg = 'black')
@@ -154,17 +157,20 @@ class Interface:
             graphCanvas.create_text(i*barW + 10 + 20, Height - 10+5, text = self.__db.chp_getIDtoName(graphData[i]), tags = "grim")
             graphCanvas.create_text(i*barW + 10 + 20, Height - (Height - 20) * value[i] / maxCount - 5,
                                    text = str(value[i]), tags = "grim")
+    
+    def Btn_Telegram(self):
+        teller.start()
         
-
     def Btn_SubFunc(self, event = None):
         
         self.subFuncWindow = Toplevel(self.window)
-        self.subFuncWindow.geometry("200x100")
+        self.subFuncWindow.geometry("200x150")
         Label(self.subFuncWindow, text = '전적 정보 이메일 전송',).pack(side = 'top')
         self.SF_Entry = Entry(self.subFuncWindow)
         self.SF_Entry.pack(side = 'top', fill = 'x')
         Button(self.subFuncWindow, text = "이메일 전송", command = self.Btn_EmailSend).pack(side = 'top', fill = "x")
         Button(self.subFuncWindow, text = "현재 전적 Champion Graph 출력", command = self.Btn_DrawGraph).pack(side = 'top', fill = "x")
+        Button(self.subFuncWindow, text = "Telegram 봇 가동", command = self.Btn_Telegram).pack(side = 'top', fill = "x")
 
 
     def Btn_Search(self, event = None):
@@ -231,9 +237,40 @@ class Interface:
         #Most List
         for i in range(len(most)):
             self.mostLabelList[i].configure(image = self.imgChampionDict[most[i][0]], text = 'Top ' + str(i + 1) + '\n' + str(most[i][2]) + 'Pt')
+        #Matches
         AccountID =  self.__db.getAccountID()
         ScrolledFrame_Rank(self.FrameTab_entire,   self.__db.getCardDB('Entire'), self.imgChampionDict)
         print('Draw Entire')
         self.TabComplete[0] = True
+        #WinCanvas
+        self.WinCanvas.delete("grim")
+        CardDB = self.__db.getCardDB('Entire')
+        Win = 0
+        Lose = 0
+        for i in CardDB:
+            if(i[0]):
+                Win += 1
+            else:
+                Lose += 1
+
+        Height = 50
+        Width = 240
+        
+        self.WinCanvas.create_rectangle(0,
+                                        Height,
+                                        Width * (Win / (Win + Lose)),
+                                        0,
+                                        fill = 'dark blue', tags = "grim")
+        self.WinCanvas.create_rectangle(Width * (Win / (Win + Lose)),
+                                        Height,
+                                        Width,
+                                        0,
+                                        fill = 'dark red', tags = "grim")
+
+        self.WinCanvas.create_text(40, Height/2, text = 'Win : ' + str(Win), fill = 'white', font = ('HY견고딕', 12), tags = "grim")
+        self.WinCanvas.create_text(Width - 40, Height/2, text = 'Lose : ' + str(Lose), fill = 'white', font = ('HY견고딕', 12), tags = "grim")
+        
+
+
 
 Interface()
